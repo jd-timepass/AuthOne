@@ -58,7 +58,3 @@ npm start
 ## 📚 Learning Resources
 
 Refer to documentation for implementation details and best practices.
-
-## 📝 License
-
-MIT
