@@ -13,10 +13,23 @@ const userSchema = mongoose.Schema(
             lowercase: true,
             trim: true,
         },
-        password:{
-            type: String
+        password: {
+            type: String,
+            required: true,
+        },
+        role: {
+            type: String,
+            enum: ['user', 'admin'],
+            required: true,
+            default: user,
+
+        },
+        isActive: {
+            type: Boolean,
+            required: true,
+            default: true,
         }
 
     }, { timestamps: true });
 
-
+export const User = mongoose.model('User', userSchema);
