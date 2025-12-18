@@ -35,12 +35,15 @@ const userSchema = mongoose.Schema(
 
 //using pre middleware to salt password before saving.
 // IMPORTANT: here we cannot use async arrow function bcz it will not support this keyword inside.
-userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
+userSchema.pre('save', async function () {
+    if (!this.isModified('password')) return;
 
     this.password = await bcrypt.hash(this.password, 10);
-    next();
+    //IMP: In async funtion no need to call next() bcz as fn
+    //completes mongoose automatically continues...
 });
+
+
 
 userSchema.methods.comparePassword = async function (password) {
     return await bcrypt.compare(password, this.password);
