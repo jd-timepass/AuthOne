@@ -1,6 +1,4 @@
 import { User } from "../models/user.model.js";
-// import * as authService from './auth.service.js';
-
 export const register = async (req, res, next) => {
 
     try {
@@ -34,4 +32,35 @@ export const register = async (req, res, next) => {
         console.log("Registration error: ", error);
         res.status(500).json({ error: error.message });
     }
+}
+
+export const login = async (req, res, next) => {
+
+
+    const { email, password } = req.body;
+
+    //find user by email
+    const user = await User.findOne({ email: email });
+
+    if(!user){
+        throw new Error("User does not exist...");
+    }
+
+
+    //check if matching
+    const isMatch = await user.comparePassword(password);
+
+    if (!isMatch) {
+        throw new Error("Invalid password...");
+    }
+
+    //create session
+    req.session.user = {
+        id: user._id,
+        role: user.role,
+    }
+
+    return res.status(200).json({ ok: true });
+
+
 }
