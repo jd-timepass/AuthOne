@@ -3,6 +3,7 @@ import authRoutes from './modules/auth.routes.js';
 const app = express();
 import CookieParser from 'cookie-parser';
 import { sessionMiddleware } from './config/session.js';
+import { authGuard } from './middlewares/auth.guard.js';
 
 //Middlewares
 
