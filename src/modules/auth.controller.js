@@ -1,3 +1,4 @@
+import session from "express-session";
 import { User } from "../models/user.model.js";
 export const register = async (req, res, next) => {
 
@@ -42,7 +43,7 @@ export const login = async (req, res, next) => {
     //find user by email
     const user = await User.findOne({ email: email });
 
-    if(!user){
+    if (!user) {
         throw new Error("User does not exist...");
     }
 
@@ -63,4 +64,13 @@ export const login = async (req, res, next) => {
     return res.status(200).json({ ok: true });
 
 
+}
+
+export const logout = async (req, res, next) => {
+    req.session.destroy(err => {
+        if (err) return next(err);
+
+        res.clearCookie('sid');
+        res.status(200).json({ message: 'Logged out successfully...' });
+    });
 }
