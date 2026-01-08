@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, logout } from './auth.controller.js';
+import { register, login, logout, jwtLogin } from './auth.controller.js';
 import { authGuard } from '../middlewares/auth.guard.js';
 import { roleGuard } from '../middlewares/role.guard.js';
 
