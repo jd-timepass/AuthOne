@@ -5,6 +5,8 @@ import { roleGuard } from '../middlewares/role.guard.js';
 
 const router = express.Router();
 
+// Stateful authentication - SESSION BASED
+
 router.post('/register', register);
 
 router.post('/login', login);
@@ -25,5 +27,9 @@ router.get('/user', authGuard, roleGuard('user'), (req, res) => {
 router.get('/admin', authGuard, roleGuard('admin'), (req, res) => {
     res.status(200).json({ message: 'Welcome admin!' });
 });
+
+// Stateless authentication - JWT Based
+
+router.post('/jwt/login', jwtLogin);
 
 export default router;

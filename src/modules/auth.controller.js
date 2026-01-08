@@ -1,5 +1,9 @@
 import session from "express-session";
 import { User } from "../models/user.model.js";
+import { signAccessToken } from "../utils/token.js";
+
+// Stateful Authentication - Session Based
+
 export const register = async (req, res, next) => {
 
     try {
@@ -73,4 +77,33 @@ export const logout = async (req, res, next) => {
         res.clearCookie('sid');
         res.status(200).json({ message: 'Logged out successfully...' });
     });
+}
+
+// Stateless Authentication - JWT Based
+
+export const jwtLogin = async (req, res, next) => {
+
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) throw new Error("User does not exist...");
+
+        const isMatch =  await user.comparePassword(password);
+
+
+        if (!isMatch) throw new Error("Invalid password");
+
+        const token = signAccessToken({
+            userId: user._id,
+            role: user.role,
+        });
+
+        res.json({
+            accessToken: token
+        });
+
+    } catch (err) {
+        next(err);
+    }
 }
